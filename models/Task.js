@@ -1,4 +1,6 @@
-const { Schema, model } = require("mongoose");
+// const { Schema, model } = require("mongoose");
+
+import { Schema, model } from "mongoose";
 
 const taskSchema = new Schema({
   title: {
@@ -8,4 +10,6 @@ const taskSchema = new Schema({
   description: String,
 });
 
-module.exports = model("Task", taskSchema);
+export default model("Task", taskSchema);
+
+// module.exports = model("Task", taskSchema);

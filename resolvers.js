@@ -1,7 +1,14 @@
-const { Query } = require("mongoose");
-const Task = require("./models/Task");
+// const { Query } = require("mongoose");
+// const Task = require("./models/Task");
+// const { PubSub } = require("graphql-subscriptions");
 
-const resolvers = {
+import { Query } from "mongoose";
+import Task from "./models/Task.js";
+import { PubSub } from "graphql-subscriptions";
+
+const pubsub = new PubSub();
+
+export const resolvers = {
   Query: {
     hello: () => "Hello world",
     goodBye: () => "GoodBye!",
@@ -38,6 +45,8 @@ const resolvers = {
 
       await newTask.save();
 
+      pubsub.publish("NEW_TASK", { newTask });
+
       return newTask;
     },
     async deleteTask(_, { id }) {
@@ -56,6 +65,14 @@ const resolvers = {
       return ut;
     },
   },
+
+  Subscription: {
+    newTask: {
+      resolve: (payload) => payload.newTask,
+
+      subscribe: () => pubsub.asyncIterator("NEW_TASK"),
+    },
+  },
 };
 
-module.exports = { resolvers };
+// module.exports = { resolvers };

@@ -1,6 +1,8 @@
-const { gql } = require("apollo-server-express");
+// const { gql } = require("apollo-server-express");
 
-const typeDefs = gql`
+import { gql } from "apollo-server-express";
+
+export const typeDefs = gql`
   type Task {
     id: ID
     title: String
@@ -24,6 +26,10 @@ const typeDefs = gql`
     deleteTask(id: ID!): Task
     updateTask(id: ID!, task: TaskInput!): Task
   }
+
+  type Subscription {
+    newTask: Task
+  }
 `;
 
-module.exports = { typeDefs };
+//module.exports = { typeDefs };
